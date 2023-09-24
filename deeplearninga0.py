@@ -31,3 +31,26 @@ tsne_result = tsne.fit_transform(train_data)
 
 # UMAP
 umap_result = umap.UMAP(n_neighbors=5, min_dist=0.3).fit_transform(train_data)
+
+# Plot the results
+
+class_labels = np.unique(train_label)
+
+result_list = [pca_result, tsne_result, umap_result]
+result_names = ['PCA', 't-SNE', 'UMAP']
+
+# Create a figure with 3 subplots
+plt.figure(figsize=(15, 6))
+
+# Loop through the results and plot each one
+for i, result in enumerate(result_list):
+    plt.subplot(1, 3, i+1)
+    for label in class_labels:
+        plt.scatter(result[train_label == label, 0], result[train_label == label, 1], label=label, s=10)
+    plt.title(result_names[i])
+
+plt.subplot(1,3,2)
+plt.legend(class_labels, loc='lower center', bbox_to_anchor=(0.5, -0.2), ncol=5)
+
+plt.tight_layout()
+plt.show()
