@@ -69,3 +69,25 @@ def calculate_accuracy(data, labels, centers):
             correct += 1
     accuracy = (correct / len(data)) * 100
     return accuracy
+
+# Calculate Means from the Training Set
+means = []
+for label in class_labels:
+    mean = np.mean(train_data[train_label == label], axis=0)
+    means.append(mean)
+
+# Apply the Nearest Mean Classifier on the Training Set
+nmc_train_pred = []
+for point in train_data:
+    nmc_train_pred.append(nearest_mean_classifier(point, means))
+nmc_train_pred = np.array(nmc_train_pred)
+nmc_train_accuracy = np.sum(nmc_train_pred == train_label) / len(train_label) * 100
+print('Training Accuracy: {:.2f}%'.format(nmc_train_accuracy))
+
+# Apply the Nearest Mean Classifier on the Test Set
+nmc_test_pred = []
+for point in test_data:
+    nmc_test_pred.append(nearest_mean_classifier(point, means))
+nmc_test_pred = np.array(nmc_test_pred)
+nmc_test_accuracy = np.sum(nmc_test_pred == test_label) / len(test_label) * 100
+print('Test Accuracy: {:.2f}%'.format(nmc_test_accuracy))
