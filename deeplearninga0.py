@@ -54,3 +54,18 @@ plt.legend(class_labels, loc='lower center', bbox_to_anchor=(0.5, -0.2), ncol=5)
 
 plt.tight_layout()
 plt.show()
+
+# Function to classify a point using Nearest Mean Classifier
+def nearest_mean_classifier(points, centers):
+    distances = [np.linalg.norm(points - center) for center in centers]
+    return np.argmin(distances)
+
+# Function to calculate the accuracy of classification
+def calculate_accuracy(data, labels, centers):
+    correct = 0
+    for i in range(len(data)):
+        predicted_label = nearest_mean_classifier(data[i], centers)
+        if predicted_label == labels[i]:
+            correct += 1
+    accuracy = (correct / len(data)) * 100
+    return accuracy
