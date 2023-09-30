@@ -151,3 +151,63 @@ for i, matrix in enumerate(precent_confusion_matrix):
 
 plt.suptitle('Confusion Matrices of Nearest Mean Classifier and KNN Classifier', fontsize=16)
 plt.show()
+
+# Define multi class perceptron
+# Arguments:
+# num_classes: Number of classes
+# num_features: Number of features
+
+# Methods:
+# train: Train the model
+# Arguments:
+# X_train: Input data
+# y_train: Output data
+# lr: Learning rate
+# epochs: Number of epochs
+
+# predict: Predict the class of the input data
+# Arguments:
+# X_test: Input data
+# Returns:
+# y_pred: Predicted class of the input data
+
+# Input data is 16x16 images of digits 0-9
+# Output data is the digit itself
+# Number of classes = 10
+# Number of features = 257 (16x16 + 1 bias term)
+
+class MultiClassPerceptron():
+    def __init__(self, num_classes, num_features):
+        self.num_classes = num_classes
+        self.num_features = num_features
+        # Add bias term
+        # Initialize weights to random values
+        self.weights = np.random.rand(num_classes, num_features + 1)
+
+    def train(self, X_train, y_train, lr=0.01, epochs=100):
+        for epoch in tqdm(range(epochs)):
+            for i in range(len(X_train)):
+                # Add bias term
+                x = np.append(X_train[i], 1)
+                # Predict the class
+                y_pred = np.dot(self.weights, x)
+
+                # Label the true class
+                y_true = np.zeros(self.num_classes)
+                y_true[y_train[i]] = 1
+
+                # Update weights
+                # Formula: w_true = w_true + lr * x
+                #          w_pred = w_pred - lr * x
+                if y_pred.argmax() != y_true.argmax():
+                    self.weights[y_true.argmax()] += lr * x
+                    self.weights[y_pred.argmax()] -= lr * x
+
+    def predict(self, X_test):
+        y_pred = []
+        for x in X_test:
+            # Add bias term
+            x = np.append(x, 1)
+            # Predict the class
+            y_pred.append(np.argmax(np.dot(self.weights, x)))
+        return y_pred
