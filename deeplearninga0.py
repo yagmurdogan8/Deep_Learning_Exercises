@@ -6,6 +6,7 @@ from sklearn.manifold import TSNE
 import umap
 import random
 from tqdm import tqdm
+from sklearn.neighbors import KNeighborsClassifier
 
 # Load the training data
 train_in_df = pd.read_csv('data/train_in.csv', header=None)
@@ -103,7 +104,6 @@ plt.tight_layout()
 plt.show()
 
 # Train the KNN classifier
-from sklearn.neighbors import KNeighborsClassifier
 
 knn = KNeighborsClassifier(n_neighbors=5)
 knn.fit(train_data, train_label)
@@ -117,3 +117,4 @@ knn_test_accuracy = np.sum(knn_test_pred == test_label) / len(test_label) * 100
 
 print('KNN Training Accuracy: {:.2f}%'.format(knn_train_accuracy))
 print('KNN Test Accuracy: {:.2f}%'.format(knn_test_accuracy))
+
