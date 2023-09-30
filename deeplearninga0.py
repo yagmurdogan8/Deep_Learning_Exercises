@@ -101,3 +101,19 @@ for i, center in enumerate(means):
     plt.title('Digit {}'.format(i))
 plt.tight_layout()
 plt.show()
+
+# Train the KNN classifier
+from sklearn.neighbors import KNeighborsClassifier
+
+knn = KNeighborsClassifier(n_neighbors=5)
+knn.fit(train_data, train_label)
+
+knn_train_pred = knn.predict(train_data)
+knn_test_pred = knn.predict(test_data)
+
+# Evaluate
+knn_train_accuracy = np.sum(knn_train_pred == train_label) / len(train_label) * 100
+knn_test_accuracy = np.sum(knn_test_pred == test_label) / len(test_label) * 100
+
+print('KNN Training Accuracy: {:.2f}%'.format(knn_train_accuracy))
+print('KNN Test Accuracy: {:.2f}%'.format(knn_test_accuracy))
