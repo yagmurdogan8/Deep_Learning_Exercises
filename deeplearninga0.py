@@ -211,3 +211,11 @@ class MultiClassPerceptron():
             # Predict the class
             y_pred.append(np.argmax(np.dot(self.weights, x)))
         return y_pred
+
+    # Train the model
+    num_classes = 10
+    num_features = 256
+    epochs = 20
+    lr = 0.1
+    model = MultiClassPerceptron(num_classes, num_features)
+    model.train(train_data, train_label, lr, epochs)
