@@ -91,3 +91,13 @@ for point in test_data:
 nmc_test_pred = np.array(nmc_test_pred)
 nmc_test_accuracy = np.sum(nmc_test_pred == test_label) / len(test_label) * 100
 print('Test Accuracy: {:.2f}%'.format(nmc_test_accuracy))
+
+# Visualize means of each digit
+# Can be used for Task 1 Q1
+plt.figure(figsize=(20, 8))
+for i, center in enumerate(means):
+    plt.subplot(2, 5, i+1)
+    plt.imshow(center.reshape(16, 16), cmap='gray')
+    plt.title('Digit {}'.format(i))
+plt.tight_layout()
+plt.show()
