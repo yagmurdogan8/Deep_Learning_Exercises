@@ -219,3 +219,22 @@ class MultiClassPerceptron():
     lr = 0.1
     model = MultiClassPerceptron(num_classes, num_features)
     model.train(train_data, train_label, lr, epochs)
+
+    # Test the model on the training data
+    train_correct = 0
+    train_pred = model.predict(train_data)
+    for i in range(len(train_pred)):
+        if train_pred[i] == train_label[i]:
+            train_correct += 1
+    train_acc = train_correct / len(train_pred)
+
+    # Test the model on the test data
+    test_correct = 0
+    test_pred = model.predict(test_data)
+    for i in range(len(test_pred)):
+        if test_pred[i] == test_label[i]:
+            test_correct += 1
+    test_acc = test_correct / len(test_pred)
+
+    print('Training accuracy: {:.2f}%'.format(train_acc * 100))
+    print('Test accuracy: {:.2f}%'.format(test_acc * 100))
