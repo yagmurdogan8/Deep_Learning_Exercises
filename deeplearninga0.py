@@ -118,3 +118,36 @@ knn_test_accuracy = np.sum(knn_test_pred == test_label) / len(test_label) * 100
 print('KNN Training Accuracy: {:.2f}%'.format(knn_train_accuracy))
 print('KNN Test Accuracy: {:.2f}%'.format(knn_test_accuracy))
 
+# Confusion Matrix
+from sklearn.metrics import confusion_matrix
+
+# Calculate the confusion matrix for the Nearest Mean Classifier
+nmc_confusion_matrix = confusion_matrix(train_label, nmc_train_pred)
+
+# Calculate the confusion matrix for the KNN Classifier
+knn_confusion_matrix = confusion_matrix(train_label, knn_train_pred)
+
+# Plot the confusion matrices for Nearest Mean Classifier and KNN Classifier
+precent_confusion_matrix = [nmc_confusion_matrix / np.sum(nmc_confusion_matrix, axis=1) * 100,
+                            knn_confusion_matrix / np.sum(knn_confusion_matrix, axis=1) * 100]
+matrix_names = ['Nearest Mean Classifier', 'KNN Classifier']
+
+plt.figure(figsize=(15, 6))
+for i, matrix in enumerate(precent_confusion_matrix):
+    plt.subplot(1, 2, i+1)
+    plt.imshow(matrix, cmap='Blues')
+    plt.title(matrix_names[i])
+    plt.colorbar(format='%d%%')
+
+    # Add labels to each cell
+    for j in range(matrix.shape[0]):
+        for k in range(matrix.shape[1]):
+            plt.text(k, j, '{:.2f}%'.format(matrix[j, k]), ha='center', va='center', size=8)
+
+    plt.xlabel('Predicted Label')
+    plt.ylabel('True Label')
+    plt.xticks(np.arange(10))
+    plt.yticks(np.arange(10))
+
+plt.suptitle('Confusion Matrices of Nearest Mean Classifier and KNN Classifier', fontsize=16)
+plt.show()
