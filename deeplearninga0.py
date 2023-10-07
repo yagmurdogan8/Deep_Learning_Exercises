@@ -238,3 +238,49 @@ class MultiClassPerceptron():
 
     print('Training accuracy: {:.2f}%'.format(train_acc * 100))
     print('Test accuracy: {:.2f}%'.format(test_acc * 100))
+
+    # Relu function
+    def relu(x):
+        return np.maximum(0, x)
+
+    # Derivative of relu function
+    def relu_derivative(x):
+        return np.where(x <= 0, 0, 1)
+
+    # Sigmod function
+    def sigmoid(x):
+        return 1 / (1 + np.exp(-x))
+
+    # Derivative of sigmod function
+    def sigmoid_derivative(x):
+        return sigmoid(x) * (1 - sigmoid(x))
+
+    # Tanh function
+    def tanh(x):
+        return np.tanh(x)
+
+    # Derivative of tanh function
+    def tanh_derivative(x):
+        return 1 - np.power(tanh(x), 2)
+
+    # Define general activation function
+
+    def activation(x, func='sigmoid'):
+        if func == 'sigmoid':
+            return sigmoid(x)
+        elif func == 'relu':
+            return relu(x)
+        elif func == 'tanh':
+            return tanh(x)
+        else:
+            raise ValueError('Unknown activation function')
+
+    def activation_derivative(x, func='sigmoid'):
+        if func == 'sigmoid':
+            return sigmoid_derivative(x)
+        elif func == 'relu':
+            return relu_derivative(x)
+        elif func == 'tanh':
+            return tanh_derivative(x)
+        else:
+            raise ValueError('Unknown activation function')
