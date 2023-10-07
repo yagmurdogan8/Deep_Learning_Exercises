@@ -373,3 +373,27 @@ def train(inputs, weights, targets, learning_rate, epochs, activation_func):
 # Data
 inputs = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
 targets = np.array([0, 1, 1, 0])
+
+# Experiment on different learning rates
+learning_rates = [1, 0.1, 0.01, 0.001]
+
+# Initialize epochs
+epochs = 10000
+
+# Initialize weights
+weights = np.random.randn(9)
+
+for lr in learning_rates:
+    _weights = weights.copy()
+
+    # Train
+    error_list, misclassified_list = train(inputs, _weights, targets, lr, epochs, 'sigmoid')
+
+    # Plot
+    plt.plot(error_list, label='lr = ' + str(lr))
+
+plt.xlabel('Epochs')
+plt.ylabel('Mean Squared Error')
+plt.legend()
+plt.title('Mean Squared Error vs Epochs', fontsize=14)
+plt.show()
