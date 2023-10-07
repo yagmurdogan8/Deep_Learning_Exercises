@@ -1,3 +1,5 @@
+# This is a group assignment made with the collabration of other team members as well.
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -45,21 +47,23 @@ plt.figure(figsize=(15, 6))
 
 # Loop through the results and plot each one
 for i, result in enumerate(result_list):
-    plt.subplot(1, 3, i+1)
+    plt.subplot(1, 3, i + 1)
     for label in class_labels:
         plt.scatter(result[train_label == label, 0], result[train_label == label, 1], label=label, s=10)
     plt.title(result_names[i])
 
-plt.subplot(1,3,2)
+plt.subplot(1, 3, 2)
 plt.legend(class_labels, loc='lower center', bbox_to_anchor=(0.5, -0.2), ncol=5)
 
 plt.tight_layout()
 plt.show()
 
+
 # Function to classify a point using Nearest Mean Classifier
 def nearest_mean_classifier(points, centers):
     distances = [np.linalg.norm(points - center) for center in centers]
     return np.argmin(distances)
+
 
 # Function to calculate the accuracy of classification
 def calculate_accuracy(data, labels, centers):
@@ -70,6 +74,7 @@ def calculate_accuracy(data, labels, centers):
             correct += 1
     accuracy = (correct / len(data)) * 100
     return accuracy
+
 
 # Calculate Means from the Training Set
 means = []
@@ -97,7 +102,7 @@ print('Test Accuracy: {:.2f}%'.format(nmc_test_accuracy))
 # Can be used for Task 1 Q1
 plt.figure(figsize=(20, 8))
 for i, center in enumerate(means):
-    plt.subplot(2, 5, i+1)
+    plt.subplot(2, 5, i + 1)
     plt.imshow(center.reshape(16, 16), cmap='gray')
     plt.title('Digit {}'.format(i))
 plt.tight_layout()
@@ -134,7 +139,7 @@ matrix_names = ['Nearest Mean Classifier', 'KNN Classifier']
 
 plt.figure(figsize=(15, 6))
 for i, matrix in enumerate(precent_confusion_matrix):
-    plt.subplot(1, 2, i+1)
+    plt.subplot(1, 2, i + 1)
     plt.imshow(matrix, cmap='Blues')
     plt.title(matrix_names[i])
     plt.colorbar(format='%d%%')
@@ -151,6 +156,7 @@ for i, matrix in enumerate(precent_confusion_matrix):
 
 plt.suptitle('Confusion Matrices of Nearest Mean Classifier and KNN Classifier', fontsize=16)
 plt.show()
+
 
 # Define multi class perceptron
 # Arguments:
@@ -285,8 +291,9 @@ class MultiClassPerceptron():
         else:
             raise ValueError('Unknown activation function')
 
+
 # Define xor network function
-def xor_net(input, weights, activation_func = 'sigmoid'):
+def xor_net(input, weights, activation_func='sigmoid'):
     # Split weights into variables
     w1, w2, w0 = weights[0:3]
     v1, v2, v0 = weights[3:6]
@@ -301,6 +308,7 @@ def xor_net(input, weights, activation_func = 'sigmoid'):
 
     return output
 
+
 # Define error function with mean square error
 def mse(weights, inputs, targets, activation_func='sigmoid'):
     error = 0
@@ -312,6 +320,7 @@ def mse(weights, inputs, targets, activation_func='sigmoid'):
 
     return error / len(inputs)
 
+
 def misclassified(weights, inputs, targets, activation_func='sigmoid'):
     mis = 0
 
@@ -321,10 +330,10 @@ def misclassified(weights, inputs, targets, activation_func='sigmoid'):
 
     return mis
 
+
 # Gradient of the mean squared error function
 # It returns the vector of partial derivatives of the mse function over each element of the weights vector.
 def grdmse(weights, input, target, activation_func='sigmoid'):
-
     pred = xor_net(input, weights, activation_func)
 
     w1, w2, w0 = weights[0:3]
@@ -340,12 +349,14 @@ def grdmse(weights, input, target, activation_func='sigmoid'):
     # Calculate gradient with Derivative of sigmoid function
 
     # Hidden Layer, first node
-    dw0 = (pred - target) * activation_derivative(y, func=activation_func) * u1 * activation_derivative(y1, func=activation_func)
+    dw0 = (pred - target) * activation_derivative(y, func=activation_func) * u1 * activation_derivative(y1,
+                                                                                                        func=activation_func)
     dw1 = dw0 * x1
     dw2 = dw0 * x2
 
     # Hidden Layer, second node
-    dv0 = (pred - target) * activation_derivative(y, func=activation_func) * u2 * activation_derivative(y2, func=activation_func)
+    dv0 = (pred - target) * activation_derivative(y, func=activation_func) * u2 * activation_derivative(y2,
+                                                                                                        func=activation_func)
     dv1 = dv0 * x1
     dv2 = dv0 * x2
 
@@ -355,6 +366,7 @@ def grdmse(weights, input, target, activation_func='sigmoid'):
     du2 = du0 * activation(y2, func=activation_func)
 
     return np.array([dw1, dw2, dw0, dv1, dv2, dv0, du1, du2, du0])
+
 
 def train(inputs, weights, targets, learning_rate, epochs, activation_func):
     error_list = []
@@ -369,6 +381,7 @@ def train(inputs, weights, targets, learning_rate, epochs, activation_func):
             weights = weights - learning_rate * gradients
 
     return error_list, misclassified_list
+
 
 # Data
 inputs = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
