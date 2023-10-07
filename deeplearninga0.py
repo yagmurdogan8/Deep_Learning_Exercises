@@ -397,3 +397,35 @@ plt.ylabel('Mean Squared Error')
 plt.legend()
 plt.title('Mean Squared Error vs Epochs', fontsize=14)
 plt.show()
+
+# Experiment on different ways to initialize weights
+
+# Initialize parameters
+epochs = 10000
+lr = 0.1
+
+# Initialize weights
+weights_list = [np.ones(9),
+                np.random.randn(9),
+                np.random.rand(9),
+                np.random.uniform(-1, 1, 9),
+                np.random.uniform(-0.5, 0.5, 9)]
+
+weights_name = ['ones',
+                'Standard Normal Distribution',
+                'Uniform Distribution [0, 1]',
+                'Uniform Distribution [-1, 1]',
+                'Uniform Distribution [-0.5, 0.5]']
+
+for weights, i in zip(weights_list, range(len(weights_list))):
+    # Train
+    error_list, misclassified_list = train(inputs, weights, targets, lr, epochs, 'sigmoid')
+
+    # Plot
+    plt.plot(error_list, label=weights_name[i])
+
+plt.xlabel('Epochs')
+plt.ylabel('Mean Squared Error')
+plt.legend()
+plt.title('Different Weights Initialization', fontsize=14)
+plt.show()
