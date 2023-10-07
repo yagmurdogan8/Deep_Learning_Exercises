@@ -369,3 +369,7 @@ def train(inputs, weights, targets, learning_rate, epochs, activation_func):
             weights = weights - learning_rate * gradients
 
     return error_list, misclassified_list
+
+# Data
+inputs = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+targets = np.array([0, 1, 1, 0])
