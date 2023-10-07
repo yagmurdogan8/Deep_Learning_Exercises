@@ -468,3 +468,27 @@ plt.legend()
 
 plt.suptitle('Different Activation Functions', fontsize=14)
 plt.show()
+
+# Lazy apporach
+
+trials = 100
+retry_times = []
+
+# Function for a single trial
+retry = 0
+for i in tqdm(range(trials)):
+    while True:
+        weights = np.random.randn(9)
+        if misclassified(weights, inputs, targets) == 0:
+            retry_times.append(retry)
+            break
+        else:
+            retry += 1
+
+# Plot histogram
+plt.hist(retry_times)
+plt.xlabel('Number of retries')
+plt.ylabel('Frequency')
+plt.title('Histogram of number of retries', fontsize=14)
+plt.show()
+print(np.mean(retry_times))
