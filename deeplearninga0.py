@@ -429,3 +429,42 @@ plt.ylabel('Mean Squared Error')
 plt.legend()
 plt.title('Different Weights Initialization', fontsize=14)
 plt.show()
+
+# Train
+epochs = 10000
+lr = 0.1
+
+# Evaluate different activation functions
+activation_funcs = ['sigmoid', 'relu', 'tanh']
+
+plt.figure(figsize=(10, 5))
+
+for activation_func in activation_funcs:
+    # Initialize weights
+    weights = np.random.randn(9)
+
+    # Train
+    error_list, misclassified_list = train(inputs, weights, targets, lr, epochs, activation_func)
+
+    # Plot
+    plt.subplot(1, 2, 1)
+    plt.plot(error_list, label=activation_func)
+
+    plt.subplot(1, 2, 2)
+    plt.plot(misclassified_list, label=activation_func)
+
+plt.subplot(1, 2, 1)
+plt.xlabel('Epochs')
+plt.ylabel('Mean Squared Error')
+plt.title('Mean Squared Error vs Epochs', fontsize=12)
+plt.legend()
+
+plt.subplot(1, 2, 2)
+plt.xlabel('Epochs')
+plt.ylabel('Misclassified')
+plt.yticks(range(5))
+plt.title('Misclassified vs Epochs', fontsize=12)
+plt.legend()
+
+plt.suptitle('Different Activation Functions', fontsize=14)
+plt.show()
