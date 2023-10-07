@@ -284,3 +284,88 @@ class MultiClassPerceptron():
             return tanh_derivative(x)
         else:
             raise ValueError('Unknown activation function')
+
+# Define xor network function
+def xor_net(input, weights, activation_func = 'sigmoid'):
+    # Split weights into variables
+    w1, w2, w0 = weights[0:3]
+    v1, v2, v0 = weights[3:6]
+    u1, u2, u0 = weights[6:9]
+
+    x1, x2 = input
+
+    y1 = activation((x1 * w1 + x2 * w2 + w0), func=activation_func)
+    y2 = activation((x1 * v1 + x2 * v2 + v0), func=activation_func)
+
+    output = activation((y1 * u1 + y2 * u2 + u0), func=activation_func)
+
+    return output
+
+# Define error function with mean square error
+def mse(weights, inputs, targets, activation_func='sigmoid'):
+    error = 0
+
+    # Calculate error
+    for i in range(len(inputs)):
+        pred = xor_net(inputs[i], weights, activation_func=activation_func)
+        error += (pred - targets[i]) ** 2
+
+    return error / len(inputs)
+
+def misclassified(weights, inputs, targets, activation_func='sigmoid'):
+    mis = 0
+
+    for i in range(len(inputs)):
+        true_pred = xor_net(inputs[i], weights, activation_func) > 0.5
+        mis += true_pred != targets[i]
+
+    return mis
+
+# Gradient of the mean squared error function
+# It returns the vector of partial derivatives of the mse function over each element of the weights vector.
+def grdmse(weights, input, target, activation_func='sigmoid'):
+
+    pred = xor_net(input, weights, activation_func)
+
+    w1, w2, w0 = weights[0:3]
+    v1, v2, v0 = weights[3:6]
+    u1, u2, u0 = weights[6:9]
+
+    x1, x2 = input
+
+    y1 = x1 * w1 + x2 * w2 + w0
+    y2 = x1 * v1 + x2 * v2 + v0
+    y = activation(y1, func=activation_func) * u1 + activation(y2) * u2 + u0
+
+    # Calculate gradient with Derivative of sigmoid function
+
+    # Hidden Layer, first node
+    dw0 = (pred - target) * activation_derivative(y, func=activation_func) * u1 * activation_derivative(y1, func=activation_func)
+    dw1 = dw0 * x1
+    dw2 = dw0 * x2
+
+    # Hidden Layer, second node
+    dv0 = (pred - target) * activation_derivative(y, func=activation_func) * u2 * activation_derivative(y2, func=activation_func)
+    dv1 = dv0 * x1
+    dv2 = dv0 * x2
+
+    # Output node
+    du0 = (pred - target) * activation_derivative(y, func=activation_func)
+    du1 = du0 * activation(y1, func=activation_func)
+    du2 = du0 * activation(y2, func=activation_func)
+
+    return np.array([dw1, dw2, dw0, dv1, dv2, dv0, du1, du2, du0])
+
+def train(inputs, weights, targets, learning_rate, epochs, activation_func):
+    error_list = []
+    misclassified_list = []
+
+    for epoch in tqdm(range(epochs)):
+        error_list.append(mse(weights, inputs, targets, activation_func))
+        misclassified_list.append(misclassified(weights, inputs, targets, activation_func))
+
+        for i in range(len(inputs)):
+            gradients = grdmse(weights, inputs[i], targets[i], activation_func)
+            weights = weights - learning_rate * gradients
+
+    return error_list, misclassified_list
